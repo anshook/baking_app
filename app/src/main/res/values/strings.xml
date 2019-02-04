@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Baking App</string>
+
+    <string name="internet_unavailable">No Internet Connection. Make sure Cellular Data or WiFi is turned on, then try again.</string>
+    <string name="title_recipedetail_list">Recipe_list</string>
+    <string name="title_recipedetail_detail">Recipe_detail Detail</string>
+    <string name="no_data">No Data Found</string>
+    <string name="ingredients_label"><u>Ingredients</u></string>
+    <string name="steps_label"><u>Steps</u></string>
+    <string name="serving_title">Serves</string>
+    <string name="step_title">Step</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="widget_added_confirmation">Recipe added to Widget</string>
+
+</resources>

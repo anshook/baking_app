@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.udacity.ak.bakingapp.ui.MainActivity">
+   <GridView
+       android:id="@+id/gv_recipes"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:columnWidth="@dimen/col_width_grid"
+       android:numColumns="auto_fit"
+       android:verticalSpacing="@dimen/spacing_grid"
+       android:horizontalSpacing="@dimen/spacing_grid"
+       android:stretchMode="columnWidth"
+       android:padding="@dimen/spacing_grid"
+       android:gravity="center"/>
+   <ProgressBar
+       android:id="@+id/pb_loading"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"/>
+   <TextView
+       android:id="@+id/tv_empty"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/no_data"
+       android:textSize="@dimen/textsize_message"
+       android:textStyle="bold"
+       android:visibility="invisible"/>
+</LinearLayout>
