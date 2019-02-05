@@ -9,6 +9,7 @@ import com.udacity.ak.bakingapp.R;
 import com.udacity.ak.bakingapp.model.Recipe;
 import com.udacity.ak.bakingapp.model.Step;
 
+import butterknife.BindBool;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 
@@ -17,6 +18,8 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
     private static final String ACTION_BAR_TITLE = "saved_action_bar_title";
 
     @BindString(R.string.serving_title) String mServingText;
+    @BindBool(R.bool.is_tablet) boolean mIsTablet;
+
     public static final String PARCEL_DATA = "parcel_data";
     private Recipe recipe;
     private boolean mTwoPane;
@@ -32,8 +35,11 @@ public class DetailActivity extends AppCompatActivity implements DetailFragment.
         if(getIntent().hasExtra(PARCEL_DATA)) {
             recipe = (Recipe) getIntent().getParcelableExtra(PARCEL_DATA);
         }
-        if (findViewById(R.id.step_detail_container) != null) {
+
+        if (mIsTablet) {
             mTwoPane = true;
+        } else {
+            mTwoPane = false;
         }
 
         if(savedInstanceState == null) {

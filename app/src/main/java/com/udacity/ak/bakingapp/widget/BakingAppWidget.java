@@ -1,4 +1,4 @@
-package com.udacity.ak.bakingapp;
+package com.udacity.ak.bakingapp.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.text.Html;
 import android.widget.RemoteViews;
 
+import com.udacity.ak.bakingapp.BuildConfig;
+import com.udacity.ak.bakingapp.R;
 import com.udacity.ak.bakingapp.ui.MainActivity;
 import com.udacity.ak.bakingapp.utilities.AppConstants;
 

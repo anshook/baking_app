@@ -4,27 +4,24 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.udacity.ak.bakingapp.R;
-import com.udacity.ak.bakingapp.RecipeAdapter;
+import com.udacity.ak.bakingapp.adapter.RecipeAdapter;
 import com.udacity.ak.bakingapp.model.Recipe;
+import com.udacity.ak.bakingapp.utilities.AppConstants;
 import com.udacity.ak.bakingapp.utilities.InternetCheck;
 import com.udacity.ak.bakingapp.utilities.RestClient;
 import com.udacity.ak.bakingapp.utilities.SimpleIdlingResource;
@@ -32,6 +29,7 @@ import com.udacity.ak.bakingapp.utilities.SimpleIdlingResource;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,17 +38,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeAdapter.RecipeClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String RECIPE_LIST = "saved_recipe_list";
 
-    @BindView(R.id.gv_recipes) GridView mRecipesGridView;
+    @BindView(R.id.rv_recipes) RecyclerView mRecipesRecyclerView;
     @BindView(R.id.tv_empty) TextView mEmptyView;
     @BindView(R.id.pb_loading) ProgressBar mProgressBar;
     @BindString(R.string.internet_unavailable) String noInternetMessage;
+    @BindDimen(R.dimen.col_width_grid) int colWidth;
 
     private List<Recipe> recipeList;
     private Disposable disposable;
+    RecipeAdapter recipeAdapter;
 
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //display ProgressBar while the grid loads
-        mRecipesGridView.setEmptyView(mProgressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
 
         if (mIdlingResource != null) {
             mIdlingResource.setIdleState(false);
@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getRecipeList() {
-
         RestClient.getRestService().getRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, e.getMessage());
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(mRecipesRecyclerView, e.getMessage(), Snackbar.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -140,18 +139,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void populateUI(){
-        RecipeAdapter recipeAdapter=new RecipeAdapter(MainActivity.this, recipeList);
-        mRecipesGridView.setAdapter(recipeAdapter);
-        mProgressBar.setVisibility(View.GONE);
-        mRecipesGridView.setEmptyView(mEmptyView);
+        recipeAdapter=new RecipeAdapter(MainActivity.this, recipeList);
+        recipeAdapter.setClickListener(this);
 
-        mRecipesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Recipe selectedRecipe = (Recipe)parent.getItemAtPosition(position);
-                launchRecipeDetailActivity(selectedRecipe);
-            }
-        });
+        mProgressBar.setVisibility(View.GONE);
+        int numberOfColumns = AppConstants.calculateNoOfColumns(this, colWidth);
+        mRecipesRecyclerView.setHasFixedSize(true);
+        mRecipesRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        mRecipesRecyclerView.setAdapter(recipeAdapter);
+        mProgressBar.setVisibility(View.GONE);
+        mEmptyView.setVisibility(recipeList.size() > 0 ? View.GONE : View.VISIBLE);
     }
 
     private void launchRecipeDetailActivity(Recipe selectedRecipe) {
@@ -174,5 +171,11 @@ public class MainActivity extends AppCompatActivity {
             mIdlingResource = new SimpleIdlingResource();
         }
         return mIdlingResource;
+    }
+
+    @Override
+    public void onClick(int position) {
+        Recipe selectedRecipe = recipeList.get(position);
+        launchRecipeDetailActivity(selectedRecipe);
     }
 }

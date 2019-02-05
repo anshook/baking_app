@@ -1,4 +1,4 @@
-package com.udacity.ak.bakingapp;
+package com.udacity.ak.bakingapp.adapter;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.udacity.ak.bakingapp.R;
 import com.udacity.ak.bakingapp.model.Step;
 
 import java.util.List;

@@ -11,10 +11,6 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.udacity.ak.bakingapp.model.Recipe;
-import com.udacity.ak.bakingapp.model.Step;
 import com.udacity.ak.bakingapp.ui.DetailActivity;
 import com.udacity.ak.bakingapp.ui.MainActivity;
 
@@ -24,10 +20,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -37,6 +31,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.isInte
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -49,6 +44,7 @@ public class MainActivityIntentTest {
             = new ActivityTestRule<>(MainActivity.class);
 
     private IdlingResource mIdlingResource;
+    private static final String NUTELLA_PIE = "Nutella Pie";
 
     @Before
     public void registerIdlingResource() {
@@ -63,15 +59,21 @@ public class MainActivityIntentTest {
     }
 
     @Test
+    public void checkItem_MainActivity() throws InterruptedException {
+        Thread.sleep(500);
+        onView(ViewMatchers.withId(R.id.rv_recipes)).perform(scrollToPosition(0));
+        onView(withText(NUTELLA_PIE)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void checkIntent_DetailActivity() throws InterruptedException {
         Thread.sleep(500);
-        onData(allOf(is(instanceOf(Recipe.class))))
-                .atPosition(0)
-                .inAdapterView(withId(R.id.gv_recipes))
-                .perform(click());
-
+        onView(ViewMatchers.withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         intended(hasComponent(DetailActivity.class.getName()));
     }
+
+
+
 
     @After
     public void unregisterIdlingResource() {

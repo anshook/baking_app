@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,10 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.udacity.ak.bakingapp.BakingAppWidget;
+import com.udacity.ak.bakingapp.widget.BakingAppWidget;
 import com.udacity.ak.bakingapp.BuildConfig;
 import com.udacity.ak.bakingapp.R;
-import com.udacity.ak.bakingapp.StepAdapter;
+import com.udacity.ak.bakingapp.adapter.StepAdapter;
 import com.udacity.ak.bakingapp.model.Ingredient;
 import com.udacity.ak.bakingapp.model.Recipe;
 import com.udacity.ak.bakingapp.utilities.AppConstants;
@@ -118,7 +117,8 @@ public class DetailFragment extends Fragment {
             }
         });
         mStepRecyclerView.setAdapter(mStepAdapter);
-        mStepRecyclerView.setHasFixedSize(true);mStepRecyclerView.setNestedScrollingEnabled(false);
+        mStepRecyclerView.setHasFixedSize(true);
+        mStepRecyclerView.setNestedScrollingEnabled(false);
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         mStepRecyclerView.addItemDecoration(decoration);
 

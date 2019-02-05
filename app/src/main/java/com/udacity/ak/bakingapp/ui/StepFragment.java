@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepFragment extends Fragment {
-    private static final String TAG = DetailFragment.class.getSimpleName();
+    private static final String TAG = StepFragment.class.getSimpleName();
 
     public static final String ARG_STEP_DATA = "step_data";
+    private static final String PLAY_MEDIA_URI = "play_media_uri";
     private final String PLAY_POSITION = "play_position";
     private final String PLAY_WHEN_READY = "play_when_ready";
 
@@ -90,9 +92,11 @@ public class StepFragment extends Fragment {
         mStepTitleView.setText(step.getShortDescription());
         mStepDescription.setText(step.getDescription());
 
-        if (!step.getVideoURL().isEmpty())
-            initializerPlayer(Uri.parse(step.getVideoURL()));
-        else if (!step.getThumbnailURL().isEmpty()) {
+        if (!TextUtils.isEmpty(step.getVideoURL())) {
+            //mPlayerView.setVisibility(View.VISIBLE);
+            initializePlayer(Uri.parse(step.getVideoURL()));
+        }
+        else if (!TextUtils.isEmpty(step.getThumbnailURL())) {
             mStepThumbnail.setVisibility(View.VISIBLE);
             Picasso.with(getContext())
                     .load(step.getThumbnailURL())
@@ -100,11 +104,10 @@ public class StepFragment extends Fragment {
         }
     }
 
-    private void initializerPlayer(Uri mediaUri){
-        mPlayerView.setVisibility(View.VISIBLE);
+    private void initializePlayer(Uri mediaUri){
         if (mSimpleExoPlayer==null){
 
-            //Create teh player
+            //Create the player
             TrackSelector trackSelector = new DefaultTrackSelector();
             mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
 
@@ -145,6 +148,15 @@ public class StepFragment extends Fragment {
             mSimpleExoPlayer.stop();
             mSimpleExoPlayer.release();
             mSimpleExoPlayer = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mSimpleExoPlayer == null) {
+            if (!TextUtils.isEmpty(step.getVideoURL()))
+                initializePlayer(Uri.parse(step.getVideoURL()));
         }
     }
 
