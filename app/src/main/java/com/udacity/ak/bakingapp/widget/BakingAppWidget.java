@@ -19,7 +19,7 @@ public class BakingAppWidget extends AppWidgetProvider {
                                 int appWidgetId) {
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_baking_app);
         SharedPreferences sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
         views.setTextViewText(R.id.tv_widget_dish, sharedPreferences.getString(AppConstants.SP_KEY_DISH_NAME, ""));
         views.setTextViewText(R.id.tv_widget_ingredients, Html.fromHtml(sharedPreferences.getString(AppConstants.SP_KEY_INGREDIENTS, "")));

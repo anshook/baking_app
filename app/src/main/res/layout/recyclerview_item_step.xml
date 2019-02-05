@@ -17,5 +17,4 @@
         android:textSize="@dimen/textsize_medium"
         android:textColor="@android:color/secondary_text_light"
         android:layout_marginLeft="@dimen/margin_small" />
-
 </LinearLayout>
