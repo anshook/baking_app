@@ -27,30 +27,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public RecipeAdapter(@NonNull Context context, @NonNull List<Recipe> recipeList){
         mRecipeList = recipeList;
     }
-    /*
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-            Recipe recipe=getItem(position);
-
-        if(convertView==null){
-            convertView= LayoutInflater.from(getContext()).inflate(R.layout.recyclerview_item_recipe,parent,false);
-        }
-
-        ImageView dishImageView=(ImageView)convertView.findViewById(R.id.iv_dish);
-        TextView dishTextView = (TextView)convertView.findViewById(R.id.tv_dish);
-
-        String imageUrl = recipe.getImage();
-        String dishName = recipe.getName();
-        if (!imageUrl.equals("")) {
-            //Load image if present
-            Picasso.with(getContext()).load(imageUrl).into(dishImageView);
-        }
-        dishTextView.setText(dishName);
-        return convertView;
-    }
-    */
 
     public interface RecipeClickListener {
         void onClick(int position);

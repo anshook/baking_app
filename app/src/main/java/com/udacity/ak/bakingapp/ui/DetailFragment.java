@@ -45,7 +45,7 @@ public class DetailFragment extends Fragment {
     private StepAdapter mStepAdapter;
 
     // Define a new interface OnStepClickListener that triggers a callback in the host activity
-    OnStepClickListener mCallback;
+    private OnStepClickListener mCallback;
 
     // OnStepClickListener interface, calls a method in the host activity named onStepSelected
     public interface OnStepClickListener {

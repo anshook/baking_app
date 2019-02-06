@@ -5,11 +5,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestClient {
+public final class RestClient {
 
     private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net";
     private static Retrofit retrofit = null;
     private static retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory rxAdapter = null;
+
+    private RestClient() {}
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
